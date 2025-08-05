@@ -48,7 +48,7 @@ st.set_page_config(page_title="AI Document Assistant", page_icon="🤖", layout=
 # --- API Key and Model Configuration ---
 try:
     genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.5-pro')
 except (AttributeError, ValueError) as e:
     st.error("🚨 API Key Error: Please set your Google API key in the secrets.")
     st.stop()
