@@ -102,9 +102,23 @@ if submitted and user_question:
                  st.markdown(context)
 
             RAG_PROMPT = """
-            Based on the context provided, answer the user's question. If the answer isn't in the context, state that clearly.
-            Context: {context}
-            Question: {question}
+            You are an expert analyst. Your task is to provide a comprehensive and insightful answer to the user's question.
+
+            Use the provided document context as your primary source of information, but do not be limited by it. You must also leverage your own general knowledge to make logical deductions, draw comparisons, and fill in any missing gaps.
+
+            **Your process should be:**
+            1.  Carefully analyze the user's question.
+            2.  Thoroughly review the document context to find any relevant facts or clues.
+            3.  Synthesize the information from the document with your own expertise. For example, if the document mentions specific technologies, projects, or concepts, use your general knowledge to explain, compare, and evaluate them.
+            4.  Formulate a complete answer that directly addresses the user's question, clearly distinguishing between facts found in the document and your own expert deductions. If the document is not relevant, answer using only your general knowledge.
+
+            **Document Context:**
+            {context}
+
+            ---
+
+            **User's Question:**
+            {question}
             """
             prompt = RAG_PROMPT.format(context=context, question=user_question)
 
