@@ -1,4 +1,4 @@
-# app.py - Final Polished Version
+# app.py - Version with Form Clearing Fix
 
 import streamlit as st
 import os
@@ -43,12 +43,12 @@ def get_text_from_uploaded_file(uploaded_file):
     return None
 
 # --- App Configuration ---
-st.set_page_config(page_title="Yahia's Chatbot", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="AI Document Assistant", page_icon="🤖", layout="wide")
 
 # --- API Key and Model Configuration ---
 try:
     genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-    model = genai.GenerativeModel('gemini-2.5-pro')
+    model = genai.GenerativeModel('gemini-pro')
 except (AttributeError, ValueError) as e:
     st.error("🚨 API Key Error: Please set your Google API key in the secrets.")
     st.stop()
@@ -78,11 +78,12 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# User input form
-with st.form("chat_form"):
+# --- MODIFIED: Use clear_on_submit=True ---
+with st.form("chat_form", clear_on_submit=True):
     user_question = st.text_area("Ask a question:", key="user_question", height=100)
     submitted = st.form_submit_button("Send")
 
+# The value of user_question is now retrieved directly from the text_area widget on submission
 if submitted and user_question:
     st.session_state.messages.append({"role": "user", "content": user_question})
     with st.chat_message("user"):
@@ -116,7 +117,3 @@ if submitted and user_question:
         st.session_state.messages.append({"role": "assistant", "content": ai_response})
         with st.chat_message("assistant"):
             st.markdown(ai_response)
-        
-        # Clear the input box and rerun
-        st.session_state.user_question = ""
-        st.rerun()
