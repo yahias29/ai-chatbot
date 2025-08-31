@@ -102,24 +102,36 @@ if submitted and user_question:
                  st.markdown(context)
 
             RAG_PROMPT = """
-            You are an expert analyst. Your task is to provide a comprehensive and insightful answer to the user's question.
+            System role: You are a careful regulatory/SEO writer. You must rely on the provided context. If facts are not present in the context, say “Not found in context.”
 
-            Use the provided document context as your primary source of information. 
+            Instructions:
 
-            **Your process should be:**
-            1.  Carefully analyze the user's question.
-            2.  Thoroughly review the document context to find any relevant facts or clues.
-            3.  Synthesize the information from the document with your own expertise. For example, if the document mentions specific technologies, projects, or concepts, use your general knowledge to explain, compare, and evaluate them.
-            4.  Formulate a complete answer that directly addresses the user's question, clearly distinguishing between facts found in the document and your own expert deductions. If the document is not relevant, answer using only your general knowledge.
+            Read the user question and the context chunks. Extract only the passages that answer the question. If nothing is relevant, respond “Not found in context.”.
 
-            **Document Context:**
+            Write a clear answer grounded ONLY in those passages. Do not invent facts. Prefer short sentences and practical steps..
+
+            After the answer, add “Sources:” with bullet list of the exact titles/sections you used, with anchor quotes (short verbatim) from the context..
+
+            Add “Confidence:” as High/Medium/Low based on how directly the passages answer the question..
+
+            If multiple passages conflict, state the conflict and prefer the most recent/official document..
+
+            Constraints:
+
+            No external knowledge unless explicitly asked; if you add general knowledge, label it “General context (not in sources).”.
+
+            For queries about MDR/UDI/EUDAMED, prefer official guidance (e.g., MDCG, EU websites) in the retrieved set when present..
+
+            Keep the final answer under 200–300 words unless asked for detail..
+
+            Document Context:
             {context}
 
-            ---
-
-            **User's Question:**
+            User Question:
             {question}
-            """ # , but do not be limited by it. You must also leverage your own general knowledge to make logical deductions, draw comparisons, and fill in any missing gaps.
+
+
+            """ 
             prompt = RAG_PROMPT.format(context=context, question=user_question)
 
         try:
