@@ -104,7 +104,7 @@ if submitted and user_question:
             RAG_PROMPT = """
             You are an expert analyst. Your task is to provide a comprehensive and insightful answer to the user's question.
 
-            Use the provided document context as your primary source of information, but do not be limited by it. You must also leverage your own general knowledge to make logical deductions, draw comparisons, and fill in any missing gaps.
+            Use the provided document context as your primary source of information. 
 
             **Your process should be:**
             1.  Carefully analyze the user's question.
@@ -119,7 +119,7 @@ if submitted and user_question:
 
             **User's Question:**
             {question}
-            """
+            """ # , but do not be limited by it. You must also leverage your own general knowledge to make logical deductions, draw comparisons, and fill in any missing gaps.
             prompt = RAG_PROMPT.format(context=context, question=user_question)
 
         try:
